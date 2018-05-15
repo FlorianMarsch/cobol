@@ -11,8 +11,7 @@ WORKING-STORAGE SECTION.
       10 bytes-group-2    PIC  9(5). 
       10 bytes-group-3    PIC  9(5). 
       10 bytes-group-4    PIC  9(5). 
-      10 bytes-group-5    PIC  9(10). 
-      10 bytes-group-6    PIC  9(5). 
+      10 bytes-group-5    PIC  9(24).
 
 
     01 uuid.  
@@ -24,8 +23,7 @@ WORKING-STORAGE SECTION.
       10 third-delimiter  PIC   X(1) VALUE '-'.
       10 uuid-group-4     PIC   X(4) VALUE ZEROS.
       10 fourth-delimiter PIC   X(1) VALUE '-'.
-      10 uuid-group-5     PIC   X(8) VALUE ZEROS.    
-      10 uuid-group-6     PIC   X(4) VALUE ZEROS.   
+      10 uuid-group-5     PIC   X(12) VALUE ZEROS.   
 
 
     01 WS-CURRENT-DATE-DATA.
@@ -39,12 +37,12 @@ WORKING-STORAGE SECTION.
         10  WS-CURRENT-SECOND       PIC 9(02).
         10  WS-CURRENT-MILLISECONDS PIC 9(02).
 
-    77 decimal-number   PIC 9(10) COMP. 
+    77 decimal-number   PIC 9(18) COMP. 
     77 dec-remainder    PIC 99 COMP. 
     77 dec-quotient     PIC 9(9) COMP. 
     77 hex-digits       PIC X(16) VALUE "0123456789ABCDEF". 
-    77 hex-string       PIC X(8) VALUE ZEROS. 
-    77 hex-output       PIC X(8) VALUE ZEROS. 
+    77 hex-string       PIC X(12) VALUE ZEROS. 
+    77 hex-output       PIC X(12) VALUE ZEROS. 
 
 PROCEDURE DIVISION.
 
@@ -55,7 +53,6 @@ PROCEDURE DIVISION.
     PERFORM FORMAT-THIRD-GROUP.
     PERFORM FORMAT-FOURTH-GROUP.
     PERFORM FORMAT-FIFTH-GROUP.
-    PERFORM FORMAT-SIXTH-GROUP.
 
     DISPLAY uuid.
     STOP RUN.
@@ -85,11 +82,6 @@ PROCEDURE DIVISION.
         PERFORM CONVERT-TO-HEX 1 TIMES.
         MOVE HEX-STRING to uuid-group-5.
 
-    FORMAT-SIXTH-GROUP.
-        MOVE bytes-group-6 TO DECIMAL-NUMBER .
-        PERFORM CONVERT-TO-HEX 1 TIMES.
-        MOVE HEX-STRING to uuid-group-6.
-
     GENERATE-RANDOM-BYTES.
         MOVE FUNCTION CURRENT-DATE TO WS-CURRENT-DATE-DATA.
         COMPUTE bytes-group-1 = FUNCTION RANDOM (WS-CURRENT-MILLISECONDS) * 10000 * 10000 * 10000 .
@@ -97,7 +89,6 @@ PROCEDURE DIVISION.
         COMPUTE bytes-group-3 = FUNCTION RANDOM (bytes-group-2) * 10000 * 10000 * 10000 .
         COMPUTE bytes-group-4 = FUNCTION RANDOM (bytes-group-3) * 10000 * 10000 * 10000 .
         COMPUTE bytes-group-5 = FUNCTION RANDOM (bytes-group-4) * 10000 * 10000 * 10000 .
-        COMPUTE bytes-group-6 = FUNCTION RANDOM (bytes-group-5) * 10000 * 10000 * 10000 .
 
     CONCAT-GROUPS-TO-UUID-STRING.
         STRING uuid-group-1 DELIMITED BY SIZE
@@ -109,7 +100,6 @@ PROCEDURE DIVISION.
                uuid-group-4 DELIMITED BY SIZE
                '-'   DELIMITED BY SIZE
                bytes-group-5 DELIMITED BY SIZE
-               bytes-group-6 DELIMITED BY SIZE
           INTO uuid
         END-STRING.
 
