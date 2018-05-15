@@ -5,23 +5,27 @@ DATA DIVISION.
       
 
 WORKING-STORAGE SECTION.
-    01 bytes-group-1    PIC  9(10). 
-    01 bytes-group-2    PIC  9(5). 
-    01 bytes-group-3    PIC  9(5). 
-    01 bytes-group-4    PIC  9(5). 
-    01 bytes-group-5    PIC  9(10). 
-    01 bytes-group-6    PIC  9(5).
     
-   
-    01 uuid-group-1     PIC   X(8) VALUE ZEROS.
-    01 uuid-group-2     PIC   X(4) VALUE ZEROS.
-    01 uuid-group-3     PIC   X(3) VALUE ZEROS.
-    01 uuid-group-4     PIC   X(4) VALUE ZEROS.
-    01 uuid-group-5     PIC   X(8) VALUE ZEROS.    
-    01 uuid-group-6     PIC   X(4) VALUE ZEROS.    
+    01 random-bytes.
+      10 bytes-group-1    PIC  9(10). 
+      10 bytes-group-2    PIC  9(5). 
+      10 bytes-group-3    PIC  9(5). 
+      10 bytes-group-4    PIC  9(5). 
+      10 bytes-group-5    PIC  9(10). 
+      10 bytes-group-6    PIC  9(5). 
 
 
-    01 uuid             PIC   X(36) VALUE ZEROS.    
+    01 uuid.  
+      10 uuid-group-1     PIC   X(8) VALUE ZEROS.
+      10 first-delimiter  PIC   X(1) VALUE '-'.
+      10 uuid-group-2     PIC   X(4) VALUE ZEROS.
+      10 second-delimiter PIC   X(2) VALUE '-4'.
+      10 uuid-group-3     PIC   X(3) VALUE ZEROS.
+      10 third-delimiter  PIC   X(1) VALUE '-'.
+      10 uuid-group-4     PIC   X(4) VALUE ZEROS.
+      10 fourth-delimiter PIC   X(1) VALUE '-'.
+      10 uuid-group-5     PIC   X(8) VALUE ZEROS.    
+      10 uuid-group-6     PIC   X(4) VALUE ZEROS.   
 
 
     01 WS-CURRENT-DATE-DATA.
@@ -52,8 +56,6 @@ PROCEDURE DIVISION.
     PERFORM FORMAT-FOURTH-GROUP.
     PERFORM FORMAT-FIFTH-GROUP.
     PERFORM FORMAT-SIXTH-GROUP.
-    
-    PERFORM CONCAT-GROUPS-TO-UUID-STRING.
 
     DISPLAY uuid.
     STOP RUN.
