@@ -5,16 +5,21 @@ var run = require("./runtime");
 
 
 
-
 test('fish-bottle', () => {
-  run("/examples/fish-bottle.test.cbl", { },
+
+
+var stdin = require('mock-stdin').stdin();
+  run("/examples/fish-bottle.cbl", {stdin:stdin},
     (err, data) => {
       expect(err).toBeNull()
-      expect(data).toBe("GRÜN");
+      expect(data).toBe("fish-bottle");
 
    
     }
   );
+
+
+  stdin.push("15\n");
 }
 );
 
